@@ -14,16 +14,6 @@ class Point{
         this.color = color;
         this.size = size;
     }
-    updatePosition(x,y){
-        this.x = x;
-        this.y = y;
-    }
-
-    renderRect(){
-        ctx.fillStyle = 'white' ;
-        ctx.fillRect(this.x, this.y, 100, 100);
-    }
-
     renderPoint(){
         ctx.fillStyle = this.color ;
         ctx.beginPath();
@@ -61,10 +51,14 @@ const loop = setInterval(()=>{
     let time = new Date();
     clearHeart(time);
     connect(center, points[time.getSeconds()], 'black',1);
+    connect(center, points[time.getMinutes()], 'gray',3);
     let hours = time.getHours();
     if (hours>12)hours-=12;
-    connect(center, points[hours* 5], 'gray',5);
-    connect(center, points[time.getMinutes()], 'gray',3);
+    if (time.getMinutes()>30 && time.getMinutes()<45)
+        connect(center, points[(hours* 5)+2], 'gray',5);
+    else if (time.getMinutes()>=45 && time.getMinutes()<=59)
+        connect(center, points[(hours* 5)+4], 'gray',5);
+    else connect(center, points[(hours* 5)], 'gray',5);
 },1000)
 
 function connect(point1, point2, color, lineWidth){
